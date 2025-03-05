@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "linden",
+  "theme": "willow",
   "name": "Metafy Docs",
   "colors": {
     "primary": "#16A34A",
@@ -20,7 +20,7 @@
         {
           "anchor": "Metafy",
           "href": "https://metafy.gg",
-          "icon": "website"
+          "icon": "globe"
         },
         {
           "anchor": "Discord",
