@@ -31,8 +31,8 @@
     }
   },
   "logo": {
-    "light": "https://static.metafy.gg/logo/Black@4x.png",
-    "dark": "https://static.metafy.gg/logo/White@4x.png"
+    "light": "https://static.metafy.gg/logo/Black.svg",
+    "dark": "https://static.metafy.gg/logo/White.svg"
   },
   "navbar": {
     "links": []
