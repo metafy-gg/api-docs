@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mint Starter Kit",
+  "theme": "lindon",
+  "name": "Metafy Docs",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
@@ -20,7 +20,7 @@
         {
           "anchor": "Metafy",
           "href": "https://metafy.gg",
-          "icon": "newspaper"
+          "icon": "website"
         },
         {
           "anchor": "Discord",
@@ -35,12 +35,7 @@
     "dark": "/logo/dark.svg"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ]
+    "links": []
   },
   "footer": {
     "socials": {
