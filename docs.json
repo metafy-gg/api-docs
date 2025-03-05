@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "willow",
+  "theme": "maple",
   "name": "Metafy Docs",
   "colors": {
     "primary": "#16A34A",
@@ -39,9 +39,9 @@
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://x.com/TryMetafy",
+      "github": "https://github.com/metafy-gg",
+      "linkedin": "https://linkedin.com/company/trymetafy"
     }
   }
 }
