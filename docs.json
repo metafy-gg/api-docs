@@ -1,18 +1,71 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "maple",
-  "name": "Metafy Docs",
+  "theme": "linden",
+  "name": "Metafy API Dev",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#806506",
+    "dark": "#806506",
+    "light": "#FCD23E"
   },
-  "favicon": "/favicon.svg",
+  "favicon": {
+    "light": "./favicon.ico",
+    "dark": "./favicon-light.ico"
+  },
+  "styling": {
+    "codeblocks": "system"
+  },
+  "fonts": {
+    "heading": {
+      "family": "ClashDisplay",
+      "source": "https://static.metafy.gg/fonts/ClashDisplay/ClashDisplay-Regular.otf",
+      "format": "woff2",
+      "weight": 400
+    },
+    "body": {
+      "family": "SuisseIntl",
+      "source": "https://static.metafy.gg/fonts/Suisse/SuisseIntl-Regular-WebM.woff2",
+      "format": "woff2",
+      "weight": 400
+    }
+  },
+  "appearance": {
+    "default": "system",
+    "strict": false
+  },
+  "background": {
+    "decoration": "windows"
+  },
+  "api": {
+    "playground": {
+      "display": "simple"
+    },
+    "examples": {
+      "languages": ["curl", "javascript", "go"]
+    }
+  },
+  "seo": {
+    "indexing": "navigable"
+  },
+  "search": {
+    "prompt": "Search the docs..."
+  },
   "navigation": {
-    "tabs": [
+    "versions": [
       {
-        "tab": "API Reference",
-        "openapi": "https://docs.metafy.gg/openapi.yml"
+        "version": "v1",
+        "groups": [
+          {
+            "group": "Documentation",
+            "pages": ["api-reference/v1/authentication", "api-reference/v1/rate-limits"]
+          },
+          {
+            "group": "Reference",
+            "openapi": {
+              "source": "./api-reference/v1/openapi-v1.yml",
+              "directory": "v1"
+            }
+          }
+        ]
       }
     ],
     "global": {
@@ -32,13 +85,15 @@
   },
   "logo": {
     "light": "https://static.metafy.gg/logo/Black.svg",
-    "dark": "https://static.metafy.gg/logo/White.svg"
+    "dark": "https://static.metafy.gg/logo/White.svg",
+    "href": "https://dev.metafy.gg"
   },
   "navbar": {
     "links": []
   },
   "footer": {
     "socials": {
+      "discord": "https://discord.mfy.gg",
       "x": "https://x.com/TryMetafy",
       "github": "https://github.com/metafy-gg",
       "linkedin": "https://linkedin.com/company/trymetafy"

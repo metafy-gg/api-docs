@@ -1,0 +1,30 @@
+---
+title: 'Authentication'
+description: 'An overview of authentication methods for the Metafy API'
+---
+
+You can authenticate with the Metafy API using OAuth 2.0. We support the Authoriziation Code flow and the Client Credentials flow.
+
+<Card
+  title="OAuth Applications"
+  icon="lock"
+  href="https://metafy.gg/account/settings/oauth"
+>
+  Manage your OAuth applications
+</Card>
+
+## Authorization Code Flow
+
+Access Tokens expire after 2 hours and Refresh Tokens do not expire until they are used or a new Access Token is generated.
+
+```
+Authorize URL: https://metafy.gg/auth/authorize
+Token URL: https://metafy.gg/irk/oauth/token
+Refresh URL: https://metafy.gg/irk/oauth/token
+```
+
+## Client Credentials Flow
+
+```
+Token URL: https://metafy.gg/irk/oauth/token
+```

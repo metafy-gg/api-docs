@@ -1,0 +1,14 @@
+---
+title: Rate Limits
+description: Requests to the API are rate limited.
+---
+
+We rate limit requests to 20 requests per minute per token.
+
+We return HTTP response headers containing the rate limit encountered during your request.
+
+```
+X-RateLimit-Limit: 20
+X-RateLimit-Remaining: 0
+X-RateLimit-Reset: 1470173023
+```
