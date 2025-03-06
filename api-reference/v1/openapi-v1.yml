@@ -8,12 +8,13 @@ info:
     email: engineering@metafy.gg
 
 servers:
-  - url: https://metafy.gg/irk/api/v1
+  - url: https://metafy.gg/irk/api
     description: API Endpoint
 
 security:
   - authorizationCode: []
   - clientCredentials: []
+  - apiKeys: []
 
 # Tags for organizing endpoints into categories
 tags:
@@ -21,13 +22,13 @@ tags:
     description: Operations related to the authenticated users profile information
   - name: Community
     description: Operations related to the authenticated users community
-  - name: Content
+  - name: Products
     description: Operations related to the product offerings of the authenticated user
   - name: Purchases
     description: Operations for verifying purchases and subscriptions
 
 paths:
-  /me:
+  /v1/me:
     get:
       tags:
         - User
@@ -38,6 +39,7 @@ paths:
       security:
         - authorizationCode: [profile]
         - clientCredentials: [profile]
+        - apiKeys: [profile]
       responses:
         '200':
           description: User profile successfully retrieved
@@ -65,17 +67,18 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
 
-  /me/guides:
+  /v1/me/guides:
     get:
       tags:
-        - Content
+        - Products
       summary: List Guides
       description: |
         This endpoint returns a list of guides that the authenticated account has published.
       operationId: getMyGuides
       security:
-        - authorizationCode: [content]
-        - clientCredentials: [content]
+        - authorizationCode: [products]
+        - clientCredentials: [products]
+        - apiKeys: [products]
       parameters:
         - $ref: '#/components/parameters/PageParam'
         - $ref: '#/components/parameters/PerPageParam'
@@ -115,7 +118,7 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
 
-  /me/community:
+  /v1/me/community:
     get:
       tags:
         - Community
@@ -126,6 +129,7 @@ paths:
       security:
         - authorizationCode: [community]
         - clientCredentials: [community]
+        - apiKeys: [community]
       responses:
         '200':
           description: Community information successfully retrieved
@@ -143,7 +147,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
-  /me/community/subscribers:
+  /v1/me/community/subscribers:
     get:
       tags:
         - Community
@@ -154,6 +158,7 @@ paths:
       security:
         - authorizationCode: [community]
         - clientCredentials: [community]
+        - apiKeys: [commmunity]
       parameters:
         - $ref: '#/components/parameters/PageParam'
         - $ref: '#/components/parameters/PerPageParam'
@@ -181,7 +186,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
-  /me/community/members:
+  /v1/me/community/members:
     get:
       tags:
         - Community
@@ -192,6 +197,7 @@ paths:
       security:
         - authorizationCode: [community]
         - clientCredentials: [community]
+        - apiKeys: [community]
       parameters:
         - $ref: '#/components/parameters/PageParam'
         - $ref: '#/components/parameters/PerPageParam'
@@ -219,7 +225,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
-  /me/community/members/{userId}:
+  /v1/me/community/members/{userId}:
     get:
       tags:
         - Community
@@ -230,6 +236,7 @@ paths:
       security:
         - authorizationCode: [community]
         - clientCredentials: [community]
+        - apiKeys: [community]
       parameters:
         - name: userId
           in: path
@@ -254,7 +261,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
-  /me/purchases/guides/{guideId}:
+  /v1/me/purchases/guides/{guideId}:
     get:
       tags:
         - Purchases
@@ -267,6 +274,7 @@ paths:
       security:
         - authorizationCode: [purchases]
         - clientCredentials: [purchases]
+        - apiKeys: [purchases]
       parameters:
         - name: guideId
           in: path
@@ -302,7 +310,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
-  /me/purchases/communities/{communityId}:
+  /v1/me/purchases/communities/{communityId}:
     get:
       tags:
         - Purchases
@@ -313,6 +321,7 @@ paths:
       security:
         - authorizationCode: [purchases]
         - clientCredentials: [purchases]
+        - apiKeys: [purchases]
       parameters:
         - name: communityId
           in: path
@@ -343,6 +352,8 @@ components:
       type: oauth2
       description: |
         This API uses OAuth 2 with the client credentials flow.
+
+        You must pass in your `client_id` to the `Authorization` header using `Bearer`.
       flows:
         clientCredentials:
           tokenUrl: https://metafy.gg/irk/oauth/token
@@ -355,6 +366,8 @@ components:
       type: oauth2
       description: |
         This API uses OAuth 2 with the authorization code flow.
+
+        You must pass in your `client_id` to the `Authorization` header using `Bearer`.
       flows:
         authorizationCode:
           authorizationUrl: https://metafy.gg/auth/authorize
@@ -365,6 +378,13 @@ components:
             community: Access to users community, including member and subscriber details
             content: Access to products offered by the user on Metafy
             purchases: Verify purchases of the user
+    apiKeys:
+      type: http
+      description: |
+        This uses API keys as the authorization method.
+
+        You can pass in your API key to the `Authorization` header using `Bearer` or you can pass it as a query param `api_key`.
+      scheme: bearer
 
   parameters:
     PageParam:
