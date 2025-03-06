@@ -3,4 +3,41 @@ title: API Keys
 description: An overview of using API keys with Metafy
 ---
 
-<Warning>Still under development</Warning>
+API keys enable application developers to build applications that utilize authentication and data from the Metafy API for their own account.
+
+<Warning>
+Protect your API keys to prevent unauthorized access. API keys can be a security risk if they fall into the wrong hands.
+</Warning>
+
+## Setting up API Keys
+
+<Steps titleSize="h3">
+  <Step title="Create an API Key">
+    To create an API key, navigate to the [API Keys](https://metafy.gg/account/settings/api-keys) section of your account settings.
+
+    Click the "Create API Key" button and give your key a description. You can create multiple keys for different applications or services.
+    API keys are scoped so make sure to include the scopes you need when creating a key.
+
+    Once you've created your key, you'll be shown the key value. Make sure to copy this value and store it securely. You won't be able to see it again.
+  </Step>
+  <Step title="Read the documentation">
+    Familiarize yourself with the API docs
+  </Step>
+  <Step title="???">
+    Let us know what you end up building!
+  </Step>
+</Steps>
+
+## Using API Keys
+
+API keys are used to authenticate requests to the Metafy API. You can include your API key in the `Authorization` header of your requests like so:
+
+```http
+Authorization: Bearer YOUR_API_KEY
+```
+
+You can also include your API key as a query parameter in your requests:
+
+```http
+https://metafy.gg/irk/api/v1/me?api_key=YOUR_API_KEY
+```
