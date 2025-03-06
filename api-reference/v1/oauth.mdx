@@ -1,0 +1,181 @@
+---
+title: OAuth2
+description: An overview of using OAuth2 with Metafy
+---
+
+OAuth2 enables application developers to build applications that utilize authentication and data from the Metafy API. Within Metafy,
+there are multiple types of OAuth2 authentication. We support the authorization code grant and client credentials.
+
+## OAuth URLs
+
+| URL | Description |
+| --- | ----------- |
+| `https://metafy.gg/auth/authorize` | Authorize URL |
+| `https://metafy.gg/irk/oauth/token` | Token URL |
+| `https://metafy.gg/irk/oauth/revoke` | Token Revocation URL |
+
+## Setting up OAuth
+
+<Steps titleSize="h3">
+  <Step title="Create your OAuth Application">
+    Go to your [OAuth Applications](https://metafy.gg/account/settings/oauth) settings and create a new application.
+
+    Retrieve your `client_id` and `client_secret` from the application settings.
+
+    <Warning>Your client secret will only be shown once, so make sure to save it in a secure location.</Warning>
+  </Step>
+  <Step title="Read the documentation">
+    Familiarize yourself with the OAuth flow you want to use.
+  </Step>
+  <Step title="???">
+    Let us know what you end up building!
+  </Step>
+</Steps>
+
+## State and Security
+
+Cross-site request forgery (CSRF) and Clickjacking attacks are common security vulnerabilities in web applications.
+The `state` parameter is a security feature that helps prevent these attacks by adding a unique token to the OAuth2 flow.
+When the user is redirected back to your application, you should verify that the `state` parameter matches the value you provided in the initial request.
+
+While Metafy does not require the use of the `state` parameter, we recommend using it.
+
+## Authorization Code Grant
+
+The authorization code grant is what most developers will recognize as "standard" and involves retrieving an authorization code and exchanging it for an access token.
+It allows the authorization server to act as an intermediary between the client and the resource owner, so the resource owner's credentials are never
+exposed to the client.
+
+### Authorization URL Example
+
+```
+https://metafy.gg/auth/authorize?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&response_type=code&state=YOUR_STATE&scope=profile
+```
+
+`client_id` is your OAuth application's client id. `scope` is a list of scopes separated by url encoded spaces (`%20`). `redirect_uri` is the URL
+you provided when creating your OAuth application, url-encoded. `state` is the unique string mentioned in [State and Security](#state-and-security).
+
+When someone navigates to this URL, they will be prompted to authorize your application for the requested scoeps. On acceptance, they will be redirected to your
+`redirect_uri`, which will contain an additional query parameter `code` that you can exchange for an access token. `state` will also be returned if you included
+it in your original request and should be validated at this point.
+
+### Redirect URL Example
+
+```
+https://example.com/oauth/callback?code=AUTHORIZATION_CODE&state=YOUR_STATE
+```
+
+`code` is now exchanged for the account's access token by making a `POST` request to the [token URL](#oauth-urls) with the following parameters:
+
+- `grant_type` - must be set to `authorization_code`
+- `code` - the authorization code provided to your redirect
+- `redirect_uri` - The URL you provided when creating your OAuth application
+- `client_id` - your oauth application's `client_id`
+- `client_secret` - your oauth application's `client_secret`
+
+### Access Token Exchange Example
+
+<CodeGroup>
+```javascript exchangeCode.js
+const CLIENT_ID = "0JmpefPS2BvB-4Q6lfwly1Iff-sR5UWaklLoRrwEvO8"
+const CLIENT_SECRET = "5b32600f350ed4def74dd0863847130fd007bb5abcec2f5447ca620b5ef526e9"
+
+async function exchangeCode(code) {
+  const response = await fetch("https://metafy.gg/irk/oauth/token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      "client_id": CLIENT_ID,
+      "client_secret": CLIENT_SECRET,
+      "grant_type": "authorization_code",
+      "redirect_uri": "https://example.com/oauth/callback"
+      code,
+    })
+  });
+  return response.json();
+}
+```
+</CodeGroup>
+
+### Access Token Response
+
+```json
+{
+  "access_token": "RC5Gkg3z2HZpyhGwtuXjoVwzmLHup6WXBUXVfyrNkkc",
+  "token_type": "Bearer",
+  "expires_in": 7200,
+  "refresh_token": "xrnkPBzIOguCT1Vu0uzqpKEvayH2iREwZdL4qRNQX6M",
+  "scope": "profile",
+  "created_at": 1741231327
+}
+```
+
+Having the account's access token allows your application to make certain requests to the API on their behalf, restricted to whatever scopes were requested.
+`expires_in` is how long, in seconds, until the returned access token expires, allowing you to anticipate the expiration and refresh the token. To refresh, make
+another `POST` request to the [token URL](#oauth-urls) with the following parameters:
+
+- `grant_type` - must be set to `refresh_token`
+- `refresh_token` - the refresh token provided in the access token response
+- `client_id` - your oauth application's `client_id`
+- `client_secret` - your oauth application's `client_secret`
+
+Once requested, you'll receive a fresh [access token response](#access-token-response).
+
+### Token Revocation
+
+To disable an access or refresh token, you can revoke it by making a `POST` request to the [token revocation URL](#oauth-urls) with the following parameters:
+
+<Warning>
+When you revoke a token, any active access or refresh tokens associated with that authorization will be revoked, regardless of the token and token_hint_type values you pass in.
+</Warning>
+
+- `token` - the access or refresh token to revoke
+- `token_type_hint` _(optional)_ - set to `access_token` or `refresh_token`
+- `client_id` - your oauth application's `client_id`
+- `client_secret` - your oauth application's `client_secret`
+
+## Client Credentials Grant
+
+The client credentials flow is a quick and easy way for developers to get their own access tokens. By making a `POST` request to the [token URL](#oauth-urls) with
+a grant type of `client_credentials`, you will be returned an access token for the application owner.
+
+You can specify scopes with the `scope` parameter.
+
+<CodeGroup>
+```javascript clientCredentials.js
+const CLIENT_ID = "0JmpefPS2BvB-4Q6lfwly1Iff-sR5UWaklLoRrwEvO8"
+const CLIENT_SECRET = "5b32600f350ed4def74dd0863847130fd007bb5abcec2f5447ca620b5ef526e9"
+
+async function exchangeCode(code) {
+  const response = await fetch("https://metafy.gg/irk/oauth/token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      "client_id": CLIENT_ID,
+      "client_secret": CLIENT_SECRET,
+      "grant_type": "client_credentials",
+      "scope": "profile"
+    })
+  });
+  return response.json();
+}
+```
+</CodeGroup>
+
+### Client Credentials Access Token Response
+
+```json
+{
+  "access_token": "RC5Gkg3z2HZpyhGwtuXjoVwzmLHup6WXBUXVfyrNkkc",
+  "token_type": "Bearer",
+  "expires_in": 7200,
+  "scope": "profile",
+  "created_at": 1741231327
+}
+```
+
+<Info>Notice, that you do not get a `refresh_token` when using the client credentials flow.</Info>

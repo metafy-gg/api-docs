@@ -8,8 +8,8 @@
     "light": "#FCD23E"
   },
   "favicon": {
-    "light": "./favicon.ico",
-    "dark": "./favicon-light.ico"
+    "light": "/favicon.ico",
+    "dark": "/favicon-light.ico"
   },
   "styling": {
     "codeblocks": "system"
@@ -40,7 +40,7 @@
       "display": "simple"
     },
     "examples": {
-      "languages": ["curl", "javascript", "go"]
+      "languages": ["curl", "javascript", "go", "python"]
     }
   },
   "seo": {
@@ -55,13 +55,21 @@
         "version": "v1",
         "groups": [
           {
-            "group": "Documentation",
-            "pages": ["api-reference/v1/authentication", "api-reference/v1/rate-limits"]
+            "group": "Overview",
+            "pages": [
+              {
+                "group": "Authentication",
+                "icon": "lock",
+                "pages": ["api-reference/v1/oauth", "api-reference/v1/api-keys"]
+              },
+              "api-reference/v1/rate-limits",
+              "api-reference/v1/change-log"
+            ]
           },
           {
-            "group": "Reference",
+            "group": "Endpoints",
             "openapi": {
-              "source": "./api-reference/v1/openapi-v1.yml",
+              "source": "api-reference/v1/openapi-v1.yml",
               "directory": "v1"
             }
           }
