@@ -12,6 +12,7 @@
     "dark": "/favicon-light.png"
   },
   "styling": {
+    "eyebrows": "breadcrumbs",
     "codeblocks": "system"
   },
   "fonts": {

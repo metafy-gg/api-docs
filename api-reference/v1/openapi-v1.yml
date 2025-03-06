@@ -31,7 +31,7 @@ paths:
     get:
       tags:
         - User
-      summary: Profile Information
+      summary: Get Profile
       description: |
         This endpoint returns information about the authenticated account.
       operationId: getMe
@@ -69,7 +69,7 @@ paths:
     get:
       tags:
         - Content
-      summary: Guides
+      summary: List Guides
       description: |
         This endpoint returns a list of guides that the authenticated account has published.
       operationId: getMyGuides
@@ -119,7 +119,7 @@ paths:
     get:
       tags:
         - Community
-      summary: Community Information
+      summary: Get Community
       description: |
         This endpoint returns information about the commmunity owned by the authenticated account.
       operationId: getMyCommunity
@@ -140,12 +140,14 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
 
   /me/community/subscribers:
     get:
       tags:
         - Community
-      summary: Community Subscribers
+      summary: List Community Subscribers
       description: |
         This endpoint returns a paginated list of active subscribers to the authenticated account's community.
       operationId: getMyCommunitySubscribers
@@ -176,15 +178,17 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
 
   /me/community/members:
     get:
       tags:
         - Community
-      summary: Community Members
+      summary: List Community Members
       description: |
         This endpoint returns a paginated list of all members of the authenticated account's community.
-      operationId: getMyCommunityMembers
+      operationId: getCommunityMembers
       security:
         - authorizationCode: [community]
         - clientCredentials: [community]
@@ -212,6 +216,43 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /me/community/members/{userId}:
+    get:
+      tags:
+        - Community
+      summary: Get Community Member
+      description: |
+        This endpoint returns information on a community member if they exist.
+      operationId: getCommunityMember
+      security:
+        - authorizationCode: [community]
+        - clientCredentials: [community]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: ID of the user to check
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User is a member of the community
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  member:
+                    $ref: '#/components/schemas/Member'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
 
   /me/purchases/guides/{guideId}:
     get:
@@ -258,6 +299,8 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
 
   /me/purchases/communities/{communityId}:
     get:
@@ -291,6 +334,8 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
 
 components:
   securitySchemes:
@@ -344,9 +389,10 @@ components:
   responses:
     Unauthorized:
       description: Authentication credentials are missing or invalid
-    
     Forbidden:
       description: You do not have permission to access this resource
+    NotFound:
+      description: The resource was not found
 
   schemas:
     User:
