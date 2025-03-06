@@ -8,8 +8,8 @@
     "light": "#FCD23E"
   },
   "favicon": {
-    "light": "/favicon.ico",
-    "dark": "/favicon-light.ico"
+    "light": "/favicon.png",
+    "dark": "/favicon-light.png"
   },
   "styling": {
     "codeblocks": "system"
@@ -57,6 +57,7 @@
           {
             "group": "Overview",
             "pages": [
+              "api-reference/v1/introduction",
               {
                 "group": "Authentication",
                 "icon": "lock",
