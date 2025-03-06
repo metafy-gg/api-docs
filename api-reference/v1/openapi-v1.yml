@@ -1,23 +1,7 @@
 openapi: 3.1.1
 info:
   title: Metafy API
-  version: 1.0.0-beta
-  description: |
-    OAuth-based API for Metafy. This API allows you to access user profile information, community details, content, and purchase verification.
-    
-    ## Authentication
-    This API supports both client credentials and authorization code OAuth2 flows. Register your application within your [Metafy Settings](https://metafy.gg/account/settings/oauth).
-    
-    ## Rate Limiting
-    API requests are limited to 20 requests per minute per token.
-
-    We return HTTP response headers containing the rate limit encountered during your request.
-
-    ```
-    X-RateLimit-Limit: 20
-    X-RateLimit-Remaining: 0
-    X-RateLimit-Reset: 1470173023
-    ```
+  version: v1
   contact:
     name: Metafy
     url: https://metafy.gg
