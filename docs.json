@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "linden",
+  "theme": "mint",
   "name": "Metafy API Dev",
   "colors": {
     "primary": "#806506",
@@ -33,7 +33,7 @@
     "strict": false
   },
   "background": {
-    "decoration": "windows"
+    "decoration": "gradient"
   },
   "api": {
     "playground": {
