@@ -50,18 +50,80 @@ paths:
                 properties:
                   user:
                     $ref: '#/components/schemas/User'
-              examples:
-                success:
-                  summary: Example user response
-                  value:
-                    user:
-                      id: "12345"
-                      slug: "pro-gamer"
-                      name: "Pro Gamer"
-                      email: "progamer@example.com"
-                      partner: true
-                      profile_image_url: "https://metafy.gg/img/profiles/progamer.jpg"
-                      cover_image_url: "https://metafy.gg/img/covers/progamer.jpg"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /v1/me/sessions:
+    get:
+      tags:
+        - Products
+      summary: List Sessions
+      description: |
+        This endpoint returns a list of sessions that the authenticated account has on offer.
+      operationId: getSessions
+      security:
+        - authorizationCode: [products]
+        - clientCredentials: [products]
+        - apiKeys: [products]
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '200':
+          description: Sessions successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Session'
+                  meta:
+                    type: object
+                    properties:
+                      pagination:
+                        $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /v1/me/events:
+    get:
+      tags:
+        - Products
+      summary: List Events
+      description: |
+        This endpoint returns a list of events that the authenticated account has on offer.
+      operationId: getEvents
+      security:
+        - authorizationCode: [products]
+        - clientCredentials: [products]
+        - apiKeys: [products]
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '200':
+          description: Events successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  events:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Event'
+                  meta:
+                    type: object
+                    properties:
+                      pagination:
+                        $ref: '#/components/schemas/Pagination'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -99,20 +161,6 @@ paths:
                     properties:
                       pagination:
                         $ref: '#/components/schemas/Pagination'
-              examples:
-                success:
-                  summary: Example guides response
-                  value:
-                    guides:
-                      - id: "guide-123"
-                        published_at: "2025-01-15T14:30:00Z"
-                        name: "Mastering Advanced Techniques"
-                        description: "A comprehensive guide to advanced gameplay mechanics"
-                    meta:
-                      pagination:
-                        current_page: 1
-                        per_page: 100
-                        total_pages: 1
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -238,10 +286,10 @@ paths:
         - clientCredentials: [community]
         - apiKeys: [community]
       parameters:
-        - name: userId
+        - name: userIdOrSlug
           in: path
           required: true
-          description: ID of the user to check
+          description: ID or Slug of the user to check
           schema:
             type: string
       responses:
@@ -292,17 +340,6 @@ paths:
                 properties:
                   guide:
                     $ref: '#/components/schemas/GuidePurchase'
-              examples:
-                hasAccess:
-                  summary: User has access
-                  value:
-                    guide:
-                      has_access: true
-                noAccess:
-                  summary: User does not have access
-                  value:
-                    guide:
-                      has_access: false
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -491,12 +528,78 @@ components:
                 nullable: true
                 description: URL of the cover image for the tier
 
+    Session:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the session
+        slug:
+          type: string
+          description: Unique URL slug for the session
+        session_count:
+          type: number
+          description: The number of schedulable sessions within this offering
+        duration_seconds:
+          type: number
+          description: The duration of each of the schedulable sessions in seconds
+        name:
+          type: string
+          description: Name of the session
+        description:
+          type: string
+          description: Description of the session
+
+    Event:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the event
+        slug:
+          type: string
+          description: Unique URL slug for the event
+        duration_seconds:
+          type: number
+          description: Scheduled runtime for the event
+        scheduled_at:
+          type: string
+          format: datetime
+          description: The date and time when the event is scheduled for
+        live_at:
+          type: string
+          format: datetime
+          description: The date and time when the event went live
+          nullable: true
+        completed_at:
+          type: string
+          format: datetime
+          description: The date and time when the event completed (went offline)
+          nullable: true
+        canceled_at:
+          type: string
+          format: datetime
+          description: The date and time when the event was canceled
+          nullable: true
+        offer_replay_purchase:
+          type: boolean
+          description: Whether the event recording is available for sale once the event is complete
+        name:
+          type: string
+          description: Name of the event
+        description:
+          type: string
+          description: Description of the event
+
     Guide:
       type: object
       properties:
         id:
           type: string
           description: Unique identifier for the guide
+        slug:
+          type: string
+          description: Unique URL slug for the guide
         published_at:
           type: string
           format: date-time
