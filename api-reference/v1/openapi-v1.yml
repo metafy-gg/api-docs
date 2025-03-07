@@ -273,7 +273,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
-  /v1/me/community/members/{userId}:
+  /v1/me/community/members/{userIdOrSlug}:
     get:
       tags:
         - Community
