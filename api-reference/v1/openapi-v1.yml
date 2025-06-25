@@ -335,7 +335,7 @@ paths:
                   guides:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Session'
+                      $ref: '#/components/schemas/TeamSession'
                   meta:
                     type: object
                     properties:
@@ -372,7 +372,7 @@ paths:
                   guides:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Event'
+                      $ref: '#/components/schemas/TeamEvent'
                   meta:
                     type: object
                     properties:
@@ -409,7 +409,7 @@ paths:
                   guides:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Guide'
+                      $ref: '#/components/schemas/TeamGuide'
                   meta:
                     type: object
                     properties:
@@ -660,6 +660,11 @@ components:
         description:
           type: string
           description: Description of the session
+        cover_url:
+          type: string
+          format: uri
+          nullable: true
+          description: URL to the cover image of the product
 
     Event:
       type: object
@@ -701,6 +706,11 @@ components:
         description:
           type: string
           description: Description of the event
+        cover_url:
+          type: string
+          format: uri
+          nullable: true
+          description: URL to the cover image of the product
 
     Guide:
       type: object
@@ -721,6 +731,11 @@ components:
         description:
           type: string
           description: Description of the guide
+        cover_url:
+          type: string
+          format: uri
+          nullable: true
+          description: URL to the cover image of the product
 
     Subscriber:
       type: object
@@ -762,6 +777,55 @@ components:
         community_id:
           type: string
           description: Unique identifier of the community
+
+    TeamUser:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the user
+        slug:
+          type: string
+          description: URL slug of the user
+        name:
+          type: string
+          description: Display name of the user
+        partner:
+          type: boolean
+          description: Whether the user is a Metafy Partner or not
+        profile_image_url:
+          type: string
+          format: uri
+          description: URL to the profile image of the user
+        cover_image_url:
+          type: string
+          format: uri
+          nullable: true
+          description: URL to the cover image of the user
+
+    TeamSession:
+      allOf:
+        - $ref: '#/components/schemas/Session'
+        - type: object
+          properties:
+            account:
+              $ref: '#/components/schemas/TeamUser'
+
+    TeamEvent:
+      allOf:
+        - $ref: '#/components/schemas/Event'
+        - type: object
+          properties:
+            account:
+              $ref: '#/components/schemas/TeamUser'
+
+    TeamGuide:
+      allOf:
+        - $ref: '#/components/schemas/Guide'
+        - type: object
+          properties:
+            account:
+              $ref: '#/components/schemas/TeamUser'
 
     GuidePurchase:
       type: object
