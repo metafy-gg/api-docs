@@ -309,6 +309,117 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
+  /v1/me/community/team/sessions:
+    get:
+      tags:
+        - Community
+      summary: List Team Sessions
+      description: |
+        This endpoint returns a list of sessions that members of your team have shared with your community.
+      operationId: getCommunityTeamSessions
+      security:
+        - authorizationCode: [community]
+        - clientCredentials: [community]
+        - apiKeys: [community]
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '200':
+          description: Sessions successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  guides:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Session'
+                  meta:
+                    type: object
+                    properties:
+                      pagination:
+                        $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /v1/me/community/team/events:
+    get:
+      tags:
+        - Community
+      summary: List Team Events
+      description: |
+        This endpoint returns a list of events that members of your team have shared with your community.
+      operationId: getCommunityTeamEvents
+      security:
+        - authorizationCode: [community]
+        - clientCredentials: [community]
+        - apiKeys: [community]
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '200':
+          description: Events successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  guides:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Event'
+                  meta:
+                    type: object
+                    properties:
+                      pagination:
+                        $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /v1/me/community/team/guides:
+    get:
+      tags:
+        - Community
+      summary: List Team Guides
+      description: |
+        This endpoint returns a list of guides that members of your team have shared with your community.
+      operationId: getCommunityTeamGuides
+      security:
+        - authorizationCode: [community]
+        - clientCredentials: [community]
+        - apiKeys: [community]
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '200':
+          description: Guides successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  guides:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Guide'
+                  meta:
+                    type: object
+                    properties:
+                      pagination:
+                        $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
   /v1/me/purchases/guides/{guideId}:
     get:
       tags:
