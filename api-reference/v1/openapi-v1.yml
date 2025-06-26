@@ -665,6 +665,8 @@ components:
           format: uri
           nullable: true
           description: URL to the cover image of the product
+        price:
+          $ref: '#/components/schemas/Money'
 
     Event:
       type: object
@@ -711,6 +713,8 @@ components:
           format: uri
           nullable: true
           description: URL to the cover image of the product
+        price:
+          $ref: '#/components/schemas/Money'
 
     Guide:
       type: object
@@ -736,6 +740,8 @@ components:
           format: uri
           nullable: true
           description: URL to the cover image of the product
+        price:
+          $ref: '#/components/schemas/Money'
 
     Subscriber:
       type: object
@@ -857,3 +863,16 @@ components:
         total_pages:
           type: integer
           description: The total number of pages
+
+    Money:
+      type: object
+      properties:
+        value:
+          type: number
+          description: The price of the product
+        value_in_cents:
+          type: integer
+          description: The price in subunits
+        currency:
+          type: string
+          description: The currency of the price. Always USD
