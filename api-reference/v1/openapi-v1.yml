@@ -332,7 +332,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  guides:
+                  sessions:
                     type: array
                     items:
                       $ref: '#/components/schemas/TeamSession'
@@ -369,7 +369,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  guides:
+                  events:
                     type: array
                     items:
                       $ref: '#/components/schemas/TeamEvent'
