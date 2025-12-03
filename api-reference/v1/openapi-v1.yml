@@ -5,7 +5,7 @@ info:
   contact:
     name: Metafy
     url: https://metafy.gg
-    email: engineering@metafy.gg
+    email: tom@metafy.gg
 
 servers:
   - url: https://metafy.gg/irk/api
@@ -667,6 +667,9 @@ components:
           description: URL to the cover image of the product
         price:
           $ref: '#/components/schemas/Money'
+        game:
+          $ref: '#/components/schemas/Game'
+          nullable: true
 
     Event:
       type: object
@@ -715,6 +718,9 @@ components:
           description: URL to the cover image of the product
         price:
           $ref: '#/components/schemas/Money'
+        game:
+          $ref: '#/components/schemas/Game'
+          nullable: true
 
     Guide:
       type: object
@@ -742,6 +748,9 @@ components:
           description: URL to the cover image of the product
         price:
           $ref: '#/components/schemas/Money'
+        game:
+          $ref: '#/components/schemas/Game'
+          nullable: true
 
     Subscriber:
       type: object
@@ -876,3 +885,21 @@ components:
         currency:
           type: string
           description: The currency of the price. Always USD
+
+    Game:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the game
+        slug:
+          type: string
+          description: Unique URL slug for the game
+        title:
+          type: string
+          description: Name of the game
+        poster_image_url:
+          type: string
+          format: uri
+          nullable: true
+          description: URL of the poster art for the game
